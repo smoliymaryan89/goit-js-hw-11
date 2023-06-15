@@ -1,8 +1,7 @@
 import { Notify } from 'notiflix';
-import PixabayApiService from './PixabayApiService';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
+import { PixabayAPIService } from '/src/js/PixabayAPIService';
 const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
@@ -12,7 +11,7 @@ let isEndOfResults = false;
 
 refs.form.addEventListener('submit', onFormSubmit);
 
-const pixabayApiService = new PixabayApiService();
+const pixabayApiService = new PixabayAPIService();
 
 async function onFormSubmit(event) {
   event.preventDefault();
