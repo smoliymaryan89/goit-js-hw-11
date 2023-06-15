@@ -1,0 +1,82 @@
+p {
+  margin: 0;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+.form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+}
+input {
+  max-width: 190px;
+  height: 100%;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #53535f;
+  caret-color: #f7f7f8;
+  color: #fff;
+  padding: 7px 10px;
+  border: 2px solid transparent;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+
+  transition: all 0.2s ease;
+}
+
+input:hover {
+  border: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+input:focus {
+  border: 2px solid #a970ff;
+  background-color: #0e0e10;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: rgba(42, 42, 45, 1);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  height: 100%;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:hover {
+  background-color: rgba(54, 54, 56, 1);
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.photo-card {
+  box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
+    0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
+}
+
+.info {
+  padding: 15px;
+}
+.info-item:not(:last-child) {
+  margin-bottom: 7px;
+}
