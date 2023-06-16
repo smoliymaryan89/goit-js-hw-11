@@ -16,6 +16,7 @@ refs.form.addEventListener('submit', onFormSubmit);
 
 const pixabayApiService = new PixabayAPIService();
 const observer = new IntersectionObserver(onLoadMoreData, options);
+let isObserverEnabled = true; // Flag to control observer
 
 async function onFormSubmit(event) {
   event.preventDefault();
@@ -43,7 +44,16 @@ async function onFormSubmit(event) {
 
     createGalleryMarkup(hits);
 
-    observer.observe(refs.guard);
+    if (hits.length < 40) {
+      isObserverEnabled = false;
+      Notify.success(`Hooray! We found ${totalHits} images.`);
+
+      return;
+    } else {
+      isObserverEnabled = true;
+      observer.observe(refs.guard);
+    }
+
     lightbox.refresh();
 
     Notify.success(`Hooray! We found ${totalHits} images.`);
