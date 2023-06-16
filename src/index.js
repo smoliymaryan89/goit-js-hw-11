@@ -4,7 +4,12 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import PixabayAPIService from '/src/js/PixabayAPIService';
 import createGalleryMarkup from '/src/js/createGalleryMarkup.js';
-import refs from '/src/js/refs.js';
+
+const refs = {
+  form: document.querySelector('.search-form'),
+  gallery: document.querySelector('.gallery'),
+  guard: document.querySelector('.js-guard'),
+};
 
 const options = {
   root: null,
