@@ -71,7 +71,7 @@ async function onLoadMoreData(entries, observer) {
         createGalleryMarkup(hits);
 
         lightbox.refresh();
-        if (pixabayApiService.page * pixabayApiService.perPage >= totalHits) {
+        if (pixabayApiService.page > totalHits / pixabayApiService.perPage) {
           observer.unobserve(refs.guard);
           Notify.info(
             "We're sorry, but you've reached the end of search results."
