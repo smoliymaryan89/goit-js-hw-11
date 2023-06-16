@@ -47,7 +47,6 @@ async function onFormSubmit(event) {
     if (hits.length < 40) {
       isObserverEnabled = false;
       Notify.success(`Hooray! We found ${totalHits} images.`);
-
       return;
     } else {
       isObserverEnabled = true;
