@@ -1,17 +1,21 @@
 import { Notify } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { PixabayAPIService } from '/src/js/PixabayAPIService';
-const refs = {
-  form: document.querySelector('.search-form'),
-  gallery: document.querySelector('.gallery'),
-};
 
-let isEndOfResults = false;
+import PixabayAPIService from '/src/js/PixabayAPIService';
+import createGalleryMarkup from '/src/js/createGalleryMarkup.js';
+import refs from '/src/js/refs';
+
+const options = {
+  root: null,
+  rootMargin: '400px',
+  threshold: 0,
+};
 
 refs.form.addEventListener('submit', onFormSubmit);
 
 const pixabayApiService = new PixabayAPIService();
+const observer = new IntersectionObserver(onLoadMoreData, options);
 
 async function onFormSubmit(event) {
   event.preventDefault();
@@ -37,9 +41,11 @@ async function onFormSubmit(event) {
       return;
     }
 
-    refs.gallery.insertAdjacentHTML('beforeend', createGalleryMarkup(hits));
+    createGalleryMarkup(hits);
 
+    observer.observe(refs.guard);
     lightbox.refresh();
+
     Notify.success(`Hooray! We found ${totalHits} images.`);
   } catch (error) {
     console.error('Error occurred while fetching images:', error);
@@ -47,64 +53,23 @@ async function onFormSubmit(event) {
   }
 }
 
-function createGalleryMarkup(data) {
-  return data
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `
-      <div class="photo-card">
-        <a href="${largeImageURL}" class='gallery__link'>
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" width='350' height='215'/>
-        </a>
-        <div class="info">
-          <p class="info-item">
-            <b>Likes: ${likes}</b>
-          </p>
-          <p class="info-item">
-            <b>Views: ${views}</b>
-          </p>
-          <p class="info-item">
-            <b>Comments: ${comments}</b>
-          </p>
-          <p class="info-item">
-            <b>Downloads: ${downloads}</b>
-          </p>
-        </div>
-      </div>
-    `
-    )
-    .join('');
-}
-
-window.addEventListener('scroll', onScroll);
-
-async function onScroll() {
-  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-
-  if (scrollTop + clientHeight >= scrollHeight - 5) {
-    try {
-      const { hits } = await pixabayApiService.getImages();
-
-      if (hits.length === 0 && !isEndOfResults) {
-        Notify.info(
-          "We're sorry, but you've reached the end of search results."
-        );
-        isEndOfResults = true;
-        return;
+async function onLoadMoreData(entries, observer) {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      pixabayApiService.incrementPage();
+      try {
+        const { hits, totalHits } = await pixabayApiService.getImages();
+        createGalleryMarkup(hits);
+        lightbox.refresh();
+        if (pixabayApiService.page * pixabayApiService.perPage >= totalHits) {
+          observer.unobserve(refs.guard);
+          Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+        }
+      } catch (err) {
+        console.log(err);
       }
-
-      refs.gallery.insertAdjacentHTML('beforeend', createGalleryMarkup(hits));
-      lightbox.refresh();
-    } catch (error) {
-      console.error('Error occurred while fetching images:', error);
-      Notify.failure('Failed to fetch images. Please try again later.');
     }
   }
 }
