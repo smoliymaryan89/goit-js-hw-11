@@ -4,7 +4,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import PixabayAPIService from '/src/js/PixabayAPIService';
 import createGalleryMarkup from '/src/js/createGalleryMarkup.js';
-import smoothScroll from '/src/js/smooth-scroll';
 import refs from '/src/js/refs.js';
 
 const options = {
@@ -70,7 +69,7 @@ async function onLoadMoreData(entries, observer) {
       try {
         const { hits, totalHits } = await pixabayApiService.getImages();
         createGalleryMarkup(hits);
-        smoothScroll();
+
         lightbox.refresh();
         if (pixabayApiService.page * pixabayApiService.perPage >= totalHits) {
           observer.unobserve(refs.guard);
