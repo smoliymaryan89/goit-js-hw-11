@@ -4,7 +4,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import PixabayAPIService from '/src/js/PixabayAPIService';
 import createGalleryMarkup from '/src/js/createGalleryMarkup.js';
-import refs from '/src/js/refs';
+import refs from '/src/js/refs.js';
 
 const options = {
   root: null,
