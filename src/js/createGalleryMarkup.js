@@ -1,4 +1,4 @@
-import refs from '/src/js/refs';
+import refs from '/src/js/refs.js';
 
 export default function createGalleryMarkup(data) {
   const markup = data
