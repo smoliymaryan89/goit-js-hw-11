@@ -46,6 +46,7 @@ async function onFormSubmit(event) {
 
     if (hits.length < 40) {
       isObserverEnabled = false;
+      lightbox.refresh();
       Notify.success(`Hooray! We found ${totalHits} images.`);
       return;
     } else {
@@ -71,7 +72,10 @@ async function onLoadMoreData(entries, observer) {
         createGalleryMarkup(hits);
 
         lightbox.refresh();
-        if (pixabayApiService.page > totalHits / pixabayApiService.perPage) {
+        if (
+          totalHits > 0 &&
+          pixabayApiService.page > totalHits / pixabayApiService.perPage
+        ) {
           observer.unobserve(refs.guard);
           Notify.info(
             "We're sorry, but you've reached the end of search results."
